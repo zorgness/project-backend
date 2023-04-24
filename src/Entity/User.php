@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use ApiPlatform\Metadata\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -48,6 +50,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['read', 'write'])]
     private ?string $description = null;
+
+    #[ORM\OneToMany(mappedBy: 'creator', targetEntity: ActivityEvent::class)]
+    private Collection $activityEvents;
+
+    public function __construct()
+    {
+        $this->activityEvents = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -151,6 +161,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ActivityEvent>
+     */
+    public function getActivityEvents(): Collection
+    {
+        return $this->activityEvents;
+    }
+
+    public function addActivityEvent(ActivityEvent $activityEvent): self
+    {
+        if (!$this->activityEvents->contains($activityEvent)) {
+            $this->activityEvents->add($activityEvent);
+            $activityEvent->setCreator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActivityEvent(ActivityEvent $activityEvent): self
+    {
+        if ($this->activityEvents->removeElement($activityEvent)) {
+            // set the owning side to null (unless already changed)
+            if ($activityEvent->getCreator() === $this) {
+                $activityEvent->setCreator(null);
+            }
+        }
 
         return $this;
     }
