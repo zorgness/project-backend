@@ -3,9 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\ActivityEventRepository;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ActivityEventRepository::class)]
+#[ApiResource(order: ['name' => 'asc'])]
+#[ApiFilter(SearchFilter::class, properties: ['category' => 'exact'])]
 class ActivityEvent
 {
     #[ORM\Id]
