@@ -11,14 +11,14 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ActivityEventRepository::class)]
-#[ApiResource(order: ['name' => 'asc'])]
-#[ApiResource(
-  uriTemplate:'/activity_events/{categoryId}',
-  uriVariables: [
-    'categoryId' => new Link(fromClass: Category::class),
-  ],
-  operations: [ new GetCollection() ]
-)]
+#[ApiResource(order: ['title' => 'asc'])]
+// #[ApiResource(
+//   uriTemplate:'/activity_events/{categoryId}',
+//   uriVariables: [
+//     'categoryId' => new Link(fromClass: Category::class),
+//   ],
+//   operations: [ new GetCollection() ]
+// )]
 #[ApiFilter(SearchFilter::class, properties: ['category' => 'exact'])]
 class ActivityEvent
 {
