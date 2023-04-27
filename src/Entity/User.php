@@ -10,10 +10,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
-
   normalizationContext: ['groups' => ['read']],
   denormalizationContext: ['groups' => ['write']],
 )]
@@ -193,5 +193,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+
+    public function __invoke(User $user): JsonResponse
+    {
+      return new JsonResponse('status', 1);
     }
 }
