@@ -19,23 +19,25 @@ class MyUserController extends  AbstractController
   public function __invoke($id, EntityManagerInterface $em): JsonResponse
   {
     $user = $em->getRepository(User::class)->findOneBy(["id" => $id]);
-    $customUser = array(
-      "id" => $user->getId(),
-      "username" => $user->getUsername(),
-      "email" => $user->getEmail(),
-      "city" => $user->getCity(),
-      "description" => $user->getDescription()
-
-    );
 
 
-    $userJson = $this->serializer->serialize(array("status"=>"success", "data"=>$customUser), 'json');
+      $customUser = array(
+        "id" => $user->getId(),
+        "username" => $user->getUsername(),
+        "email" => $user->getEmail(),
+        "city" => $user->getCity(),
+        "description" => $user->getDescription()
+
+      );
+
+
+    $userJson = $this->serializer->serialize(array("status"=>"success", "profile"=>$customUser), 'json');
 
 
 
     if(!$user) {
       return new JsonResponse(
-        array("status"=>"error", "data"=>$userJson));
+        array("status"=>"error", "profile"=>$userJson));
     } else {
       return new JsonResponse(
         $userJson, 200, array(), true);
