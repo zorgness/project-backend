@@ -2,18 +2,34 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use ApiPlatform\Metadata\ApiResource;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Delete;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use App\Repository\UserRepository;
+use App\Controller\MyUserController;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
+  operations: [
+    new Get(),
+    new Put(),
+    new Patch(),
+    new Delete(),
+    new GetCollection( name: 'myuser',
+    uriTemplate: '/users/{id}/myuser',
+    requirements: ['id' => '\d+'],
+    controller: MyUserController::class),
+  new Post()],
   normalizationContext: ['groups' => ['read']],
   denormalizationContext: ['groups' => ['write']],
 )]
@@ -195,9 +211,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-
-    public function __invoke(User $user): JsonResponse
-    {
-      return new JsonResponse('status', 1);
-    }
 }
