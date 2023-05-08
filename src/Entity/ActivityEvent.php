@@ -2,16 +2,31 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Delete;
 use App\Repository\ActivityEventRepository;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
+use App\Controller\MyActivityEventController;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ActivityEventRepository::class)]
-#[ApiResource(order: ['title' => 'asc'])]
+#[ApiResource(order: ['title' => 'asc'],  operations: [
+  new Get(),
+  new Put(),
+  new Patch(),
+  new Delete(),
+  new GetCollection( name: 'myactivityevent',
+  uriTemplate: '/activity_events/custom/{id}',
+  requirements: ['id' => '\d+'],
+  controller: MyActivityEventController::class),
+new Post()],)]
 // #[ApiResource(
 //   uriTemplate:'/activity_events/{categoryId}',
 //   uriVariables: [
