@@ -37,7 +37,7 @@ class MyActivityEventController extends  AbstractController
       );
 
 
-    $activityEventJson = $this->serializer->serialize(array("status"=> 1, "profile"=>$customActivityEvent), 'json');
+    $activityEventJson = $this->serializer->serialize(array("status"=> 1, "activityEvent"=>$customActivityEvent), 'json');
 
 
 
