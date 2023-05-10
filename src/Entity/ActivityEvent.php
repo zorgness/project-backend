@@ -17,16 +17,24 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ActivityEventRepository::class)]
-#[ApiResource(order: ['title' => 'asc'],  operations: [
-  new Get(),
-  new Put(),
-  new Patch(),
-  new Delete(),
-  new GetCollection( name: 'myactivityevent',
-  uriTemplate: '/activity_events/custom/{id}',
-  requirements: ['id' => '\d+'],
-  controller: MyActivityEventController::class),
-new Post()],)]
+
+#[ApiResource(order: ['id' => 'desc']
+//   operations: [
+//   new Get(),
+//   new Put(),
+//   new Patch(),
+//   new Delete(),
+//   new GetCollection( name: 'myactivityevent',
+//   uriTemplate: '/activity_events/custom/{id}',
+//   requirements: ['id' => '\d+'],
+//   controller: MyActivityEventController::class),
+//   //  new GetCollection(
+//   //   uriTemplate:'/activity_events/category/{categoryId}',
+//   //   uriVariables: [
+//   //   'categoryId' => new Link(fromClass: Category::class),
+//   // ]),
+// new Post()]
+)]
 // #[ApiResource(
 //   uriTemplate:'/activity_events/{categoryId}',
 //   uriVariables: [
@@ -34,7 +42,9 @@ new Post()],)]
 //   ],
 //   operations: [ new GetCollection() ]
 // )]
+
 #[ApiFilter(SearchFilter::class, properties: ['category' => 'exact'])]
+
 class ActivityEvent
 {
     #[ORM\Id]
