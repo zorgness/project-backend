@@ -67,8 +67,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['read', 'write'])]
     private ?string $description = null;
 
+    #[ORM\Column(length: 255)]
+    #[Groups(['read', 'write'])]
+    private ?string $imageUrl = null;
+
     #[ORM\OneToMany(mappedBy: 'creator', targetEntity: ActivityEvent::class)]
     private Collection $activityEvents;
+
+
 
     public function __construct()
     {
@@ -207,6 +213,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $activityEvent->setCreator(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImageUrl(): ?string
+    {
+        return $this->imageUrl;
+    }
+
+    public function setImageUrl(string $imageUrl): self
+    {
+        $this->imageUrl = $imageUrl;
 
         return $this;
     }
