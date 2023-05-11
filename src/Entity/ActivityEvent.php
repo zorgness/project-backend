@@ -7,19 +7,23 @@ use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Delete;
-use App\Repository\ActivityEventRepository;
-use ApiPlatform\Metadata\ApiResource;
+use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Link;
+use App\Repository\ActivityEventRepository;
 use App\Controller\MyActivityEventController;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
-use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use App\Controller\MyActivityEventByCategoryController;
 
 #[ORM\Entity(repositoryClass: ActivityEventRepository::class)]
 
-#[ApiResource(order: ['id' => 'desc']
-//   operations: [
+#[ApiResource(
+order: ['id' => 'desc'],
+normalizationContext: ['groups' => ['read']],
+denormalizationContext: ['groups' => ['write']],
+// , operations: [
 //   new Get(),
 //   new Put(),
 //   new Patch(),
@@ -28,20 +32,13 @@ use Doctrine\ORM\Mapping as ORM;
 //   uriTemplate: '/activity_events/custom/{id}',
 //   requirements: ['id' => '\d+'],
 //   controller: MyActivityEventController::class),
-//   //  new GetCollection(
-//   //   uriTemplate:'/activity_events/category/{categoryId}',
-//   //   uriVariables: [
-//   //   'categoryId' => new Link(fromClass: Category::class),
-//   // ]),
-// new Post()]
+//   new GetCollection(
+//   uriTemplate: '/activity_events/category/{id}',
+//   requirements: ['id' => '\w+'],
+//   controller: MyActivityEventByCategoryController::class),
+//   new Post()]
 )]
-// #[ApiResource(
-//   uriTemplate:'/activity_events/{categoryId}',
-//   uriVariables: [
-//     'categoryId' => new Link(fromClass: Category::class),
-//   ],
-//   operations: [ new GetCollection() ]
-// )]
+
 
 #[ApiFilter(SearchFilter::class, properties: ['category' => 'exact'])]
 
@@ -50,29 +47,38 @@ class ActivityEvent
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read', 'write'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read', 'write'])]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read', 'write'])]
     private ?string $location = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read', 'write'])]
     private ?string $meeting_point = null;
 
     #[ORM\Column]
+    #[Groups(['read', 'write'])]
     private ?int $max_of_people = null;
 
     #[ORM\Column]
+    #[Groups(['read', 'write'])]
     private ?\DateTimeImmutable $start_at = null;
 
+    #[Groups(['read', 'write'])]
     #[ORM\ManyToOne(inversedBy: 'activityEvents')]
     private ?Category $category = null;
 
+    #[Groups(['read', 'write'])]
     #[ORM\ManyToOne(inversedBy: 'activityEvents')]
     private ?User $creator = null;
 
@@ -157,6 +163,7 @@ class ActivityEvent
     {
         return $this->category;
     }
+
 
     public function setCategory(?Category $category): self
     {

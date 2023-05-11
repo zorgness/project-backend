@@ -12,3 +12,8 @@ api_me:
         _controller: '\App\Controller\MyUserController::fn_me'
         _api_resource_class: 'App\Entity\User'
         _api_collection_operation_name: 'collName_api_me'
+
+my_activity_event_by_category:
+    path: '/myactivityeventbycategory/{categoryId}'
+    methods: ['GET']
+    controller: 'App\Controller\MyActivityByCategoryEventController'

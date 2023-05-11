@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\ActivityEvent;
-use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
