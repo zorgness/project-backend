@@ -82,6 +82,10 @@ class ActivityEvent
     #[ORM\ManyToOne(inversedBy: 'activityEvents')]
     private ?User $creator = null;
 
+    #[Groups(['read', 'write'])]
+    #[ORM\Column(length: 255)]
+    private ?string $meetingTime = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -180,6 +184,18 @@ class ActivityEvent
     public function setCreator(?User $creator): self
     {
         $this->creator = $creator;
+
+        return $this;
+    }
+
+    public function getMeetingTime(): ?string
+    {
+        return $this->meetingTime;
+    }
+
+    public function setMeetingTime(string $meetingTime): self
+    {
+        $this->meetingTime = $meetingTime;
 
         return $this;
     }
