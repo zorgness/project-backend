@@ -22,7 +22,9 @@ use App\Controller\MyActivityEventByCategoryController;
 #[ApiResource(
 order: ['id' => 'desc'],
 normalizationContext: ['groups' => ['read']],
-denormalizationContext: ['groups' => ['write']],
+// normalizationContext: ['groups' => ['read']],
+// denormalizationContext: ['groups' => ['write']],
+
 // , operations: [
 //   new Get(),
 //   new Put(),
@@ -64,21 +66,21 @@ class ActivityEvent
 
     #[ORM\Column(length: 255)]
     #[Groups(['read', 'write'])]
-    private ?string $meeting_point = null;
+    private ?string $meetingPoint = null;
 
     #[ORM\Column]
     #[Groups(['read', 'write'])]
-    private ?int $max_of_people = null;
+    private ?int $maxOfPeople = null;
 
     #[ORM\Column]
     #[Groups(['read', 'write'])]
-    private ?\DateTimeImmutable $start_at = null;
+    private ?\DateTimeImmutable $startAt = null;
 
-    #[Groups(['read', 'write'])]
+    #[Groups(['read'])]
     #[ORM\ManyToOne(inversedBy: 'activityEvents')]
     private ?Category $category = null;
 
-    #[Groups(['read', 'write'])]
+    #[Groups(['write', 'read'])]
     #[ORM\ManyToOne(inversedBy: 'activityEvents')]
     private ?User $creator = null;
 
@@ -129,36 +131,36 @@ class ActivityEvent
 
     public function getMeetingPoint(): ?string
     {
-        return $this->meeting_point;
+        return $this->meetingPoint;
     }
 
-    public function setMeetingPoint(string $meeting_point): self
+    public function setMeetingPoint(string $meetingPoint): self
     {
-        $this->meeting_point = $meeting_point;
+        $this->meetingPoint = $meetingPoint;
 
         return $this;
     }
 
     public function getMaxOfPeople(): ?int
     {
-        return $this->max_of_people;
+        return $this->maxOfPeople;
     }
 
     public function setMaxOfPeople(int $max_of_people): self
     {
-        $this->max_of_people = $max_of_people;
+        $this->maxOfPeople = $max_of_people;
 
         return $this;
     }
 
     public function getStartAt(): ?\DateTimeImmutable
     {
-        return $this->start_at;
+        return $this->startAt;
     }
 
-    public function setStartAt(\DateTimeImmutable $start_at): self
+    public function setStartAt(\DateTimeImmutable $startAt): self
     {
-        $this->start_at = $start_at;
+        $this->startAt = $startAt;
 
         return $this;
     }

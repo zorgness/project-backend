@@ -21,7 +21,7 @@ class MyActivityEventByCategoryController extends  AbstractController
 
     public function __invoke($categoryId, EntityManagerInterface $em): JsonResponse
     {
-        $activityEvents = $em->getRepository(ActivityEvent::class)->findBy(["id" => $categoryId]);
+        $activityEvents = $em->getRepository(ActivityEvent::class)->findBy(["category" => $categoryId]);
 
         if (!$activityEvents) {
             return new JsonResponse(

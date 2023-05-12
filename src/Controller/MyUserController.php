@@ -26,7 +26,9 @@ class MyUserController extends  AbstractController
         "username" => $user->getUsername(),
         "email" => $user->getEmail(),
         "city" => $user->getCity(),
-        "description" => $user->getDescription()
+        "description" => $user->getDescription(),
+        "imageUrl" => $user->getImageUrl(),
+        //"activityEvents" => $user->getActivityEvents()
 
       );
 
