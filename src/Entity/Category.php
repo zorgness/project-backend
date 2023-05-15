@@ -7,23 +7,29 @@ use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
-#[ApiResource(order: ['id' => 'asc'] )]
+#[ApiResource(order: ['id' => 'asc'],
+normalizationContext: ['groups' => ['read']] )]
 class Category
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $url_image = null;
+    #[Groups(['read'])]
+    private ?string $urlImage = null;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: ActivityEvent::class)]
+    #[Groups(['read'])]
     private Collection $activityEvents;
 
     public function __construct()
@@ -50,12 +56,12 @@ class Category
 
     public function getUrlImage(): ?string
     {
-        return $this->url_image;
+        return $this->urlImage;
     }
 
-    public function setUrlImage(string $url_image): self
+    public function setUrlImage(string $urlImage): self
     {
-        $this->url_image = $url_image;
+        $this->urlImage = $urlImage;
 
         return $this;
     }

@@ -7,6 +7,8 @@ use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Delete;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
@@ -42,7 +44,7 @@ normalizationContext: ['groups' => ['read']],
 )]
 
 
-#[ApiFilter(SearchFilter::class, properties: ['category' => 'exact'])]
+#[ApiFilter(SearchFilter::class, properties: ['category' => 'exact', 'creator' => 'exact'])]
 
 class ActivityEvent
 {
@@ -76,7 +78,7 @@ class ActivityEvent
     #[Groups(['read', 'write'])]
     private ?\DateTimeImmutable $startAt = null;
 
-    #[Groups(['read'])]
+    #[Groups(['write','read'])]
     #[ORM\ManyToOne(inversedBy: 'activityEvents')]
     private ?Category $category = null;
 
@@ -87,6 +89,14 @@ class ActivityEvent
     #[Groups(['read', 'write'])]
     #[ORM\Column(length: 255)]
     private ?string $meetingTime = null;
+
+    #[ORM\OneToMany(mappedBy: 'activity', targetEntity: Booking::class)]
+    private Collection $bookings;
+
+    public function __construct()
+    {
+        $this->bookings = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -198,6 +208,36 @@ class ActivityEvent
     public function setMeetingTime(string $meetingTime): self
     {
         $this->meetingTime = $meetingTime;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Booking>
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): self
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings->add($booking);
+            $booking->setActivity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): self
+    {
+        if ($this->bookings->removeElement($booking)) {
+            // set the owning side to null (unless already changed)
+            if ($booking->getActivity() === $this) {
+                $booking->setActivity(null);
+            }
+        }
 
         return $this;
     }

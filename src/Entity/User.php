@@ -39,6 +39,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
@@ -74,11 +75,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'creator', targetEntity: ActivityEvent::class)]
     private Collection $activityEvents;
 
+    #[ORM\OneToMany(mappedBy: 'userAccount', targetEntity: Booking::class, orphanRemoval: true)]
+    private Collection $bookings;
+
 
 
     public function __construct()
     {
         $this->activityEvents = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -225,6 +230,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setImageUrl(string $imageUrl): self
     {
         $this->imageUrl = $imageUrl;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Booking>
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): self
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings->add($booking);
+            $booking->setUserAccount($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): self
+    {
+        if ($this->bookings->removeElement($booking)) {
+            // set the owning side to null (unless already changed)
+            if ($booking->getUserAccount() === $this) {
+                $booking->setUserAccount(null);
+            }
+        }
 
         return $this;
     }
