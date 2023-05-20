@@ -90,6 +90,7 @@ class ActivityEvent
     #[ORM\Column(length: 255)]
     private ?string $meetingTime = null;
 
+    #[Groups(['write','read'])]
     #[ORM\OneToMany(mappedBy: 'activity', targetEntity: Booking::class)]
     private Collection $bookings;
 

@@ -5,8 +5,9 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\BookingRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource()]
+#[ApiResource(normalizationContext: ['groups' => ['read']],)]
 #[ORM\Entity(repositoryClass: BookingRepository::class)]
 class Booking
 {
@@ -16,19 +17,25 @@ class Booking
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'bookings')]
+    #[Groups(['read'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $userAccount = null;
 
-    #[ORM\ManyToOne(inversedBy: 'bookings')]
+    #[ORM\ManyToOne(inversedBy: 'bookings',cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(onDelete: "CASCADE")]
+    #[Groups(['write','read'])]
     private ?ActivityEvent $activity = null;
 
     #[ORM\Column(options: ["default" => true], nullable: true)]
+    #[Groups(['read'])]
     private ?bool $isPending = true;
 
     #[ORM\Column(options: ["default" => false], nullable: true)]
+    #[Groups(['read'])]
     private ?bool $isAccepted = false;
 
     #[ORM\Column(options: ["default" => false], nullable: true)]
+    #[Groups(['read'])]
     private ?bool $isRejected = false;
 
     public function getId(): ?int
