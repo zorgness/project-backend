@@ -21,7 +21,7 @@ normalizationContext: ['groups' => ['read']],
 )]
 
 
-#[ApiFilter(SearchFilter::class, properties: ['category' => 'exact', 'creator' => 'exact'])]
+#[ApiFilter(SearchFilter::class, properties: ['category' => 'exact'])]
 
 class ActivityEvent
 {

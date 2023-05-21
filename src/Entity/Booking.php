@@ -7,7 +7,7 @@ use App\Repository\BookingRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource(normalizationContext: ['groups' => ['read']],)]
+#[ApiResource(normalizationContext: ['groups' => ['read']])]
 #[ORM\Entity(repositoryClass: BookingRepository::class)]
 class Booking
 {
@@ -19,7 +19,7 @@ class Booking
 
     #[ORM\ManyToOne(inversedBy: 'bookings')]
     #[Groups(['read'])]
-    #[ORM\JoinColumn(nullable: false, unique: true)]
+    #[ORM\JoinColumn(nullable: false)]
     private ?User $userAccount = null;
 
     #[ORM\ManyToOne(inversedBy: 'bookings')]
