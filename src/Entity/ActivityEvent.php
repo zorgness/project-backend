@@ -24,23 +24,7 @@ use App\Controller\MyActivityEventByCategoryController;
 #[ApiResource(
 order: ['id' => 'desc'],
 normalizationContext: ['groups' => ['read']],
-// normalizationContext: ['groups' => ['read']],
 // denormalizationContext: ['groups' => ['write']],
-
-// , operations: [
-//   new Get(),
-//   new Put(),
-//   new Patch(),
-//   new Delete(),
-//   new GetCollection( name: 'myactivityevent',
-//   uriTemplate: '/activity_events/custom/{id}',
-//   requirements: ['id' => '\d+'],
-//   controller: MyActivityEventController::class),
-//   new GetCollection(
-//   uriTemplate: '/activity_events/category/{id}',
-//   requirements: ['id' => '\w+'],
-//   controller: MyActivityEventByCategoryController::class),
-//   new Post()]
 )]
 
 
@@ -91,7 +75,7 @@ class ActivityEvent
     private ?string $meetingTime = null;
 
     #[Groups(['write','read'])]
-    #[ORM\OneToMany(mappedBy: 'activity', targetEntity: Booking::class)]
+    #[ORM\OneToMany(mappedBy: 'activity', targetEntity: Booking::class, cascade: ["remove"])]
     private Collection $bookings;
 
     public function __construct()

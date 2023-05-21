@@ -13,17 +13,17 @@ class Booking
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[Groups(['read'])]
     #[ORM\Column]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'bookings')]
     #[Groups(['read'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, unique: true)]
     private ?User $userAccount = null;
 
-    #[ORM\ManyToOne(inversedBy: 'bookings',cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(onDelete: "CASCADE")]
-    #[Groups(['write','read'])]
+    #[ORM\ManyToOne(inversedBy: 'bookings')]
+    #[Groups(['read'])]
     private ?ActivityEvent $activity = null;
 
     #[ORM\Column(options: ["default" => true], nullable: true)]
