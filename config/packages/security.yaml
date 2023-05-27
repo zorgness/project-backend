@@ -17,6 +17,9 @@ security:
         # main:
         #     lazy: true
         #     provider: app_user_provider
+        #     stateless: true
+        #     access_token:
+        #           token_handler: App\Security\ApiTokenHandler
 
         registration:
             pattern: ^/api/users
@@ -47,8 +50,12 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/api, roles: PUBLIC_ACCESS }
+        - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api/users, roles: PUBLIC_ACCESS }
+        - { path: ^/api/users/profile/, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/secret/dashboard, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/, roles: IS_AUTHENTICATED_FULLY }
+
 
 when@test:
     security:

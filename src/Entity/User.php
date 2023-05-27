@@ -26,7 +26,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
     new Patch(),
     new Delete(),
     new GetCollection( name: 'myuser',
-    uriTemplate: '/users/profile/{id}',
+    uriTemplate: '/profile/{id}',
     requirements: ['id' => '\d+'],
     controller: MyUserController::class),
   new Post()],
