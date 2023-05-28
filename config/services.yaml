@@ -26,21 +26,3 @@ services:
         class: App\EventListener\AuthenticationSuccessListener
         tags:
         - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
-
-    App\EventListener\TokenListener:
-        tags:
-            - { name: kernel.event_subscriber }
-
-    lexik_jwt_authentication.token_extractor:
-        class: Lexik\Bundle\JWTAuthenticationBundle\TokenExtractor\AuthorizationHeaderTokenExtractor
-        arguments:
-            - 'Bearer'
-            - 'Authorization'
-
-    lexik_jwt_authentication.jwt_manager:
-        class: Lexik\Bundle\JWTAuthenticationBundle\Services\JWTManager
-        arguments:
-            - '@lexik_jwt_authentication.encoder'
-            - '@event_dispatcher'
-            - '@lexik_jwt_authentication.key_loader'
-            - '@lexik_jwt_authentication.token_extractor'

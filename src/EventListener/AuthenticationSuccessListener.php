@@ -20,6 +20,7 @@ class AuthenticationSuccessListener
             return;
         }
 
+
         $data["status"] = 1;
         $data['id'] = $user->getId();
         $data['username'] = $user->getUsername();

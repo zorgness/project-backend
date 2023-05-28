@@ -14,12 +14,10 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        # main:
-        #     lazy: true
-        #     provider: app_user_provider
-        #     stateless: true
-        #     access_token:
-        #           token_handler: App\Security\ApiTokenHandler
+
+            # stateless: true
+            # access_token:
+            #       token_handler: App\Security\ApiTokenHandler
 
         registration:
             pattern: ^/api/users
@@ -35,11 +33,16 @@ security:
                 password_path: password
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
         api:
             pattern:  ^/api
             provider: app_user_provider
             stateless: true
             jwt: ~
+
+        main:
+            lazy: true
+            provider: app_user_provider
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -52,9 +55,9 @@ security:
     access_control:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/users, roles: PUBLIC_ACCESS }
-        - { path: ^/api/users/profile/, roles: IS_AUTHENTICATED_FULLY }
+        # - { path: ^/api/users/profile/, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/secret/dashboard, roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/api/, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/, roles: IS_AUTHENTICATED_FULLY  }
 
 
 when@test:
