@@ -6,8 +6,12 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\BookingRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\ApiFilter;
 
-#[ApiResource(normalizationContext: ['groups' => ['read']])]
+#[ApiResource(normalizationContext: ['groups' => ['read']],
+// denormalizationContext:['groups' => ['write']]
+)
+]
 #[ORM\Entity(repositoryClass: BookingRepository::class)]
 class Booking
 {
@@ -23,7 +27,7 @@ class Booking
     private ?User $userAccount = null;
 
     #[ORM\ManyToOne(inversedBy: 'bookings')]
-    #[Groups(['read'])]
+    #[Groups(['write', 'read'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?ActivityEvent $activity = null;
 
