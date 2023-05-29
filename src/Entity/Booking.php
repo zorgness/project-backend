@@ -8,9 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Metadata\ApiFilter;
 
-#[ApiResource(normalizationContext: ['groups' => ['read']],
-// denormalizationContext:['groups' => ['write']]
-)
+#[ApiResource(normalizationContext: ['groups' => ['read']])
 ]
 #[ORM\Entity(repositoryClass: BookingRepository::class)]
 class Booking
