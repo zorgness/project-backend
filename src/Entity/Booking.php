@@ -24,6 +24,7 @@ class Booking
 
     #[ORM\ManyToOne(inversedBy: 'bookings')]
     #[Groups(['read'])]
+    #[ORM\JoinColumn(nullable: false)]
     private ?ActivityEvent $activity = null;
 
     #[ORM\Column(options: ["default" => true], nullable: true)]

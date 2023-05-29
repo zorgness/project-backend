@@ -16,12 +16,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
 order: ['id' => 'desc'],
-normalizationContext: ['groups' => ['read']],
-// denormalizationContext: ['groups' => ['write']],
-)]
+normalizationContext: ['groups' => ['read']])]
 
-
-#[ApiFilter(SearchFilter::class, properties: ['category' => 'exact'])]
+#[ApiFilter(SearchFilter::class, properties: ['category' => 'exact', 'creator' => 'exact'])]
 
 class ActivityEvent
 {

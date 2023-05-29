@@ -12,11 +12,9 @@ use ApiPlatform\Metadata\Get;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[ApiResource(
-  // security: "is_granted('ROLE_USER')",
   order: ['id' => 'asc'],
-normalizationContext: ['groups' => ['read']] ),
-
-]
+  normalizationContext: ['groups' => ['read']] 
+)]
 class Category
 {
     #[ORM\Id]
