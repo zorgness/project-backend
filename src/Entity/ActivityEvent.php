@@ -16,8 +16,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
 order: ['id' => 'desc'],
-normalizationContext: ['groups' => ['read']],
-denormalizationContext:['groups' => ['write']])]
+normalizationContext: ['groups' => ['read']])]
 
 #[ApiFilter(SearchFilter::class, properties: ['category' => 'exact', 'creator' => 'exact'])]
 
@@ -65,7 +64,7 @@ class ActivityEvent
     #[ORM\Column(length: 255)]
     private ?string $meetingTime = null;
 
-    #[Groups(['write'])]
+    #[Groups(['write','read'])]
     #[ORM\OneToMany(mappedBy: 'activity', targetEntity: Booking::class, cascade: ["remove"])]
     private Collection $bookings;
 
