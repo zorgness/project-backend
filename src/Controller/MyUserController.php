@@ -25,12 +25,6 @@ class MyUserController extends  AbstractController
         "id" => $user->getId(),
         "username" => $user->getUsername(),
         "email" => $user->getEmail(),
-        "city" => $user->getCity(),
-        "description" => $user->getDescription(),
-        "imageUrl" => $user->getImageUrl(),
-        "activities" => $user->getActivityEvents(),
-        "bookings" => $user->getBookings()
-
       );
 
 

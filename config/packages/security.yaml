@@ -15,10 +15,6 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-            # stateless: true
-            # access_token:
-            #       token_handler: App\Security\ApiTokenHandler
-
         registration:
             pattern: ^/api/users
             stateless: true
@@ -55,7 +51,6 @@ security:
     access_control:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/users, roles: PUBLIC_ACCESS }
-        # - { path: ^/api/users/profile/, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/secret/dashboard, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/api/, roles: IS_AUTHENTICATED_FULLY  }
 

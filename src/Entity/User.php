@@ -12,8 +12,6 @@ use App\Repository\UserRepository;
 use App\Controller\MyUserController;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -60,30 +58,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['read', 'write'])]
     private ?string $username = null;
 
-    #[ORM\Column(length: 255)]
-    #[Groups(['read', 'write'])]
-    private ?string $city = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['read', 'write'])]
-    private ?string $description = null;
-
-    #[ORM\Column(length: 255)]
-    #[Groups(['read', 'write'])]
-    private ?string $imageUrl = null;
-
-    #[ORM\OneToMany(mappedBy: 'creator', targetEntity: ActivityEvent::class)]
-    private Collection $activityEvents;
-
-    #[ORM\OneToMany(mappedBy: 'userAccount', targetEntity: Booking::class, orphanRemoval: true)]
-    private Collection $bookings;
-
-
 
     public function __construct()
     {
-        $this->activityEvents = new ArrayCollection();
-        $this->bookings = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -168,100 +146,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getCity(): ?string
-    {
-        return $this->city;
-    }
-
-    public function setCity(string $city): self
-    {
-        $this->city = $city;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): self
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, ActivityEvent>
-     */
-    public function getActivityEvents(): Collection
-    {
-        return $this->activityEvents;
-    }
-
-    public function addActivityEvent(ActivityEvent $activityEvent): self
-    {
-        if (!$this->activityEvents->contains($activityEvent)) {
-            $this->activityEvents->add($activityEvent);
-            $activityEvent->setCreator($this);
-        }
-
-        return $this;
-    }
-
-    public function removeActivityEvent(ActivityEvent $activityEvent): self
-    {
-        if ($this->activityEvents->removeElement($activityEvent)) {
-            // set the owning side to null (unless already changed)
-            if ($activityEvent->getCreator() === $this) {
-                $activityEvent->setCreator(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getImageUrl(): ?string
-    {
-        return $this->imageUrl;
-    }
-
-    public function setImageUrl(string $imageUrl): self
-    {
-        $this->imageUrl = $imageUrl;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Booking>
-     */
-    public function getBookings(): Collection
-    {
-        return $this->bookings;
-    }
-
-    public function addBooking(Booking $booking): self
-    {
-        if (!$this->bookings->contains($booking)) {
-            $this->bookings->add($booking);
-            $booking->setUserAccount($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBooking(Booking $booking): self
-    {
-        if ($this->bookings->removeElement($booking)) {
-            // set the owning side to null (unless already changed)
-            if ($booking->getUserAccount() === $this) {
-                $booking->setUserAccount(null);
-            }
-        }
-
-        return $this;
-    }
 
 }

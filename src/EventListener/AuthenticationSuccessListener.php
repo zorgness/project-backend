@@ -24,8 +24,6 @@ class AuthenticationSuccessListener
         $data["status"] = 1;
         $data['id'] = $user->getId();
         $data['username'] = $user->getUsername();
-        $data['imageUrl'] = $user->getImageUrl();
-
 
         $event->setData($data);
     }
